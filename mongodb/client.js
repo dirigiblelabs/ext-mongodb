@@ -23,6 +23,7 @@ exports.createBasicDBObject = function() {
 	var dbObject = new DBObject();
 	var native = org.eclipse.dirigible.api.mongodb.MongoDBFacade.createBasicDBObject();
 	dbObject.native = native;
+	extract(dbObject);
 	return dbObject;
 };
 
@@ -96,6 +97,7 @@ function DBCollection() {
 			native = this.native.findOne();
 		}
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -112,6 +114,7 @@ function DBCollection() {
 			throw new Error("The id must be provided");
 		}
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -236,6 +239,7 @@ function DBCursor() {
 		var dbObject = new DBObject();
 		var native = this.native.one();
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -266,6 +270,7 @@ function DBCursor() {
 		var dbObject = new DBObject();
 		var native = this.native.getKeysWanted();
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -285,6 +290,7 @@ function DBCursor() {
 		var dbObject = new DBObject();
 		var native = this.native.next();
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -292,6 +298,7 @@ function DBCursor() {
 		var dbObject = new DBObject();
 		var native = this.native.getQuery();
 		dbObject.native = native;
+		extract(dbObject);
 		return dbObject;
 	};
 
@@ -397,5 +404,12 @@ function DBObject() {
 		return this.native.removeField(key);
 	}
 	
+}
+
+function extract(dbObject) {
+	var extracted = JSON.parse(dbObject.native.toJson());
+	for(var propertyName in extracted) {
+		dbObject[propertyName] = extracted[propertyName];
+	}
 }
 
