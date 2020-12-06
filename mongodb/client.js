@@ -245,7 +245,7 @@ function DBCollection() {
 		}
 	};
 
-	this.generateId = function() {
+	this.getNextId = function() {
 		var cursor = this.find({}, {"_id": 1});
 		if (!cursor.hasNext()) {
 			return 1;
@@ -253,6 +253,10 @@ function DBCollection() {
 		cursor.sort({"_id": -1}).limit(1);
         var next = cursor.hasNext() ? cursor.next()["_id"] + 1 : 1;
 		return next;
+	}
+
+	this.generateUUID = function() {
+		return require("utils/v4/uuid").random();
 	}
 
 }
