@@ -14,7 +14,7 @@ var globals = require("core/v4/globals");
 var mongodb = require("mongodb/client");
 
 var mongoClient = mongodb.getClient();
-var db = mongoClient.getDB("db");
+var db = mongoClient.getDB();
 
 var DAO = exports.DAO = function(orm, logCtxName, dataSourceName, databaseType){
 	if(orm === undefined)
